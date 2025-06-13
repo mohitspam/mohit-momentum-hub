@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface HabitData {
   [date: string]: { completed: boolean }[];
@@ -7,6 +9,7 @@ interface HabitData {
 
 export function ProgressCalendar() {
   const [habitData, setHabitData] = useState<HabitData>({});
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
     const savedData = localStorage.getItem("habitData");
@@ -16,26 +19,32 @@ export function ProgressCalendar() {
   }, []);
 
   const generateCalendarData = () => {
-    const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 119); // Show last 120 days (about 4 months)
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
     
     const calendarData = [];
-    const currentDate = new Date(startDate);
     
-    while (currentDate <= today) {
-      const dateStr = currentDate.toDateString();
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+      calendarData.push(null);
+    }
+    
+    // Add all days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const dateStr = date.toDateString();
       const dayData = habitData[dateStr] || [];
       const completedTasks = dayData.filter(habit => habit.completed).length;
       
       calendarData.push({
-        date: new Date(currentDate),
+        date,
         dateStr,
         completedTasks,
-        intensity: getIntensity(completedTasks)
+        intensity: getIntensity(completedTasks),
+        day
       });
-      
-      currentDate.setDate(currentDate.getDate() + 1);
     }
     
     return calendarData;
@@ -61,14 +70,36 @@ export function ProgressCalendar() {
   };
 
   const calendarData = generateCalendarData();
-  const totalDays = calendarData.length;
-  const activeDays = calendarData.filter(day => day.completedTasks > 0).length;
-  const currentStreak = getCurrentStreak(calendarData);
+  const monthDays = calendarData.filter(day => day !== null);
+  const activeDays = monthDays.filter(day => day && day.completedTasks > 0).length;
+  const currentStreak = getCurrentStreak(monthDays);
+
+  const navigateMonth = (direction: 'prev' | 'next') => {
+    setCurrentDate(prev => {
+      const newDate = new Date(prev);
+      if (direction === 'prev') {
+        newDate.setMonth(prev.getMonth() - 1);
+      } else {
+        newDate.setMonth(prev.getMonth() + 1);
+      }
+      return newDate;
+    });
+  };
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
   function getCurrentStreak(data: any[]) {
     let streak = 0;
-    for (let i = data.length - 1; i >= 0; i--) {
-      if (data[i].completedTasks > 0) {
+    const today = new Date().toDateString();
+    const todayIndex = data.findIndex(day => day && day.dateStr === today);
+    
+    if (todayIndex === -1) return 0;
+    
+    for (let i = todayIndex; i >= 0; i--) {
+      if (data[i] && data[i].completedTasks > 0) {
         streak++;
       } else {
         break;
@@ -86,22 +117,52 @@ export function ProgressCalendar() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">📊 Progress Calendar</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-semibold">📊 Progress Calendar</CardTitle>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigateMonth('prev')}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-medium min-w-[120px] text-center">
+              {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+            </span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigateMonth('next')}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
         <div className="flex justify-between text-sm text-muted-foreground">
-          <span>{activeDays} active days in last {totalDays} days</span>
+          <span>{activeDays} active days this month</span>
           <span>{currentStreak} day streak</span>
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
+          <div className="grid grid-cols-7 gap-1 text-xs text-muted-foreground mb-2">
+            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+              <div key={index} className="text-center">{day}</div>
+            ))}
+          </div>
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex gap-1">
+            <div key={weekIndex} className="grid grid-cols-7 gap-1">
               {week.map((day, dayIndex) => (
                 <div
                   key={dayIndex}
-                  className={`w-3 h-3 rounded-sm border border-border/30 ${getIntensityClass(day.intensity)}`}
-                  title={`${day.date.toLocaleDateString()}: ${day.completedTasks} tasks`}
-                />
+                  className={`w-6 h-6 rounded-sm border border-border/30 flex items-center justify-center text-xs ${
+                    day ? getIntensityClass(day.intensity) : 'bg-transparent border-transparent'
+                  }`}
+                  title={day ? `${day.date.toLocaleDateString()}: ${day.completedTasks} tasks` : ''}
+                >
+                  {day ? day.day : ''}
+                </div>
               ))}
             </div>
           ))}

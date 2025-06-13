@@ -207,16 +207,16 @@ export function GoalTracker() {
                     </div>
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <Progress 
-                    value={(goal.progress / goal.target) * 100} 
-                    className="h-2"
-                  />
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>{goal.progress}% complete</span>
-                    <span>{goal.target - goal.progress}% remaining</span>
-                  </div>
-                </div>
+                 <div className="space-y-1">
+                   <Progress 
+                     value={(goal.progress / goal.target) * 100} 
+                     className="h-2"
+                   />
+                   <div className="flex justify-between text-xs text-muted-foreground">
+                     <span>{goal.progress}% complete</span>
+                     <span>{goal.target - goal.progress}% remaining</span>
+                   </div>
+                 </div>
               </div>
             </div>
           </div>

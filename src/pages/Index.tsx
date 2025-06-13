@@ -23,6 +23,8 @@ const Index = () => {
               <FocusTimer />
             </div>
             
+            <ProgressCalendar />
+            
             <WeeklyProgress />
             
             <LearningLog />
@@ -30,7 +32,6 @@ const Index = () => {
           
           {/* Right Column - Goals and motivation */}
           <div className="space-y-6">
-            <ProgressCalendar />
             <GoalTracker />
             
             {/* Quick Stats Card */}
