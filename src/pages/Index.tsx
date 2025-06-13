@@ -21,10 +21,11 @@ const Index = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <HabitTracker />
-              <FocusTimer />
+              <div className="space-y-4">
+                <FocusTimer />
+                <MotivationWidget />
+              </div>
             </div>
-            
-            <MotivationWidget />
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ProgressCalendar />

@@ -61,10 +61,10 @@ export function MotivationWidget() {
 
   return (
     <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20">
-      <CardContent className="p-4">
+      <CardContent className="p-3">
         <div className="text-center">
-          <div className="text-xl mb-2">{currentQuote.emoji}</div>
-          <blockquote className="text-sm italic text-muted-foreground mb-2 leading-relaxed">
+          <div className="text-lg mb-1">{currentQuote.emoji}</div>
+          <blockquote className="text-xs italic text-muted-foreground mb-1 leading-relaxed">
             "{currentQuote.text}"
           </blockquote>
           <p className="text-xs font-medium text-primary">- {currentQuote.author}</p>

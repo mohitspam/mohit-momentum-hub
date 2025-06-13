@@ -12,6 +12,7 @@ interface Habit {
   completed: boolean;
   topic?: string;
   icon: string;
+  link?: string;
 }
 
 interface HabitData {
@@ -19,11 +20,11 @@ interface HabitData {
 }
 
 const DEFAULT_HABITS: Habit[] = [
-  { id: "salesforce", name: "Salesforce Practice", completed: false, icon: "☁️" },
-  { id: "java", name: "Java Practice", completed: false, icon: "☕" },
-  { id: "webdev", name: "Web Dev Course", completed: false, icon: "🌐" },
-  { id: "dsa", name: "DSA Questions", completed: false, icon: "🧮" },
-  { id: "fitness", name: "Fitness", completed: false, icon: "💪" },
+  { id: "salesforce", name: "Salesforce Practice", completed: false, icon: "☁️", link: "https://trailhead.salesforce.com/" },
+  { id: "java", name: "Java Practice", completed: false, icon: "☕", link: "https://docs.oracle.com/javase/" },
+  { id: "webdev", name: "Web Dev Course", completed: false, icon: "🌐", link: "https://developer.mozilla.org/" },
+  { id: "dsa", name: "DSA Questions", completed: false, icon: "🧮", link: "https://leetcode.com/" },
+  { id: "fitness", name: "Fitness", completed: false, icon: "💪", link: "https://www.youtube.com/results?search_query=workout" },
 ];
 
 export function HabitTracker() {
@@ -121,7 +122,19 @@ export function HabitTracker() {
               onCheckedChange={() => toggleHabit(habit.id)}
               className="data-[state=checked]:bg-success data-[state=checked]:border-success"
             />
-            <span className="text-lg">{habit.icon}</span>
+            {habit.link ? (
+              <a 
+                href={habit.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-lg hover:scale-110 transition-transform cursor-pointer"
+                title={`Open ${habit.name} resources`}
+              >
+                {habit.icon}
+              </a>
+            ) : (
+              <span className="text-lg">{habit.icon}</span>
+            )}
             <div className="flex-1">
               <label className={`font-medium cursor-pointer ${
                 habit.completed ? "line-through text-muted-foreground" : "text-foreground"
