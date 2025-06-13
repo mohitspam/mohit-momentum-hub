@@ -145,10 +145,10 @@ export function ProgressCalendar() {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <div className="grid grid-cols-7 gap-1 text-xs text-muted-foreground mb-2">
+        <div className="space-y-1">
+          <div className="grid grid-cols-7 gap-1 text-xs text-muted-foreground mb-1">
             {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
-              <div key={index} className="text-center">{day}</div>
+              <div key={index} className="text-center text-[10px]">{day}</div>
             ))}
           </div>
           {weeks.map((week, weekIndex) => (
@@ -156,25 +156,23 @@ export function ProgressCalendar() {
               {week.map((day, dayIndex) => (
                 <div
                   key={dayIndex}
-                  className={`w-6 h-6 rounded-sm border border-border/30 flex items-center justify-center text-xs ${
+                  className={`w-4 h-4 rounded-sm border border-border/20 ${
                     day ? getIntensityClass(day.intensity) : 'bg-transparent border-transparent'
                   }`}
                   title={day ? `${day.date.toLocaleDateString()}: ${day.completedTasks} tasks` : ''}
-                >
-                  {day ? day.day : ''}
-                </div>
+                />
               ))}
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-between mt-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
           <span>Less</span>
           <div className="flex gap-1">
-            <div className="w-3 h-3 rounded-sm bg-muted border border-border/30" />
-            <div className="w-3 h-3 rounded-sm bg-success/20 border border-border/30" />
-            <div className="w-3 h-3 rounded-sm bg-success/40 border border-border/30" />
-            <div className="w-3 h-3 rounded-sm bg-success/60 border border-border/30" />
-            <div className="w-3 h-3 rounded-sm bg-success/80 border border-border/30" />
+            <div className="w-2 h-2 rounded-sm bg-muted border border-border/20" />
+            <div className="w-2 h-2 rounded-sm bg-success/20 border border-border/20" />
+            <div className="w-2 h-2 rounded-sm bg-success/40 border border-border/20" />
+            <div className="w-2 h-2 rounded-sm bg-success/60 border border-border/20" />
+            <div className="w-2 h-2 rounded-sm bg-success/80 border border-border/20" />
           </div>
           <span>More</span>
         </div>

@@ -5,6 +5,7 @@ import { WeeklyProgress } from "@/components/WeeklyProgress";
 import { LearningLog } from "@/components/LearningLog";
 import { GoalTracker } from "@/components/GoalTracker";
 import { ProgressCalendar } from "@/components/ProgressCalendar";
+import { MotivationWidget } from "@/components/MotivationWidget";
 import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
@@ -23,9 +24,12 @@ const Index = () => {
               <FocusTimer />
             </div>
             
-            <ProgressCalendar />
+            <MotivationWidget />
             
-            <WeeklyProgress />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ProgressCalendar />
+              <WeeklyProgress />
+            </div>
             
             <LearningLog />
           </div>
