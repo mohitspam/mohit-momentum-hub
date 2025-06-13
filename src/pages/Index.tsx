@@ -4,6 +4,7 @@ import { FocusTimer } from "@/components/FocusTimer";
 import { WeeklyProgress } from "@/components/WeeklyProgress";
 import { LearningLog } from "@/components/LearningLog";
 import { GoalTracker } from "@/components/GoalTracker";
+import { ProgressCalendar } from "@/components/ProgressCalendar";
 import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
@@ -29,6 +30,7 @@ const Index = () => {
           
           {/* Right Column - Goals and motivation */}
           <div className="space-y-6">
+            <ProgressCalendar />
             <GoalTracker />
             
             {/* Quick Stats Card */}
