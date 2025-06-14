@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../supabase"; // adjust path if neede
+import { supabase } from "../supabaseClient"; // adjust path if neede
 
 const Login = () => {
   const [email, setEmail] = useState("");
