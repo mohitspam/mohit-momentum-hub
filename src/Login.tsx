@@ -1,14 +1,13 @@
-// src/pages/Login.jsx
 import { useState } from "react";
-import { supabase } from "../supabase"; // adjust path if needed
+import { supabase } from "../supabase"; // adjust if needed
 
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -16,9 +15,9 @@ export default function Login() {
     else window.location.href = "/";
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
@@ -47,4 +46,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default Login;
