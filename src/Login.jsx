@@ -1,8 +1,8 @@
-// src/Login.jsx
+// src/pages/Login.jsx
 import { useState } from "react";
-import { supabase } from "./supabase";
+import { supabase } from "../supabase"; // adjust path if needed
 
-export default function Login({ onLogin }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,11 +12,8 @@ export default function Login({ onLogin }) {
       email,
       password,
     });
-    if (error) {
-      alert("Login failed: " + error.message);
-    } else {
-      onLogin(data.session.user);
-    }
+    if (error) alert("Login failed: " + error.message);
+    else window.location.href = "/";
   };
 
   const handleSignup = async (e) => {
@@ -25,31 +22,28 @@ export default function Login({ onLogin }) {
       email,
       password,
     });
-    if (error) {
-      alert("Signup failed: " + error.message);
-    } else {
-      alert("Signup successful. Please check your email.");
-    }
+    if (error) alert("Signup failed: " + error.message);
+    else alert("Signup successful! Check your email.");
   };
 
   return (
-    <div className="login-box">
+    <div className="login-page">
       <h2>Login / Signup</h2>
       <form>
         <input
           type="email"
-          placeholder="Your Email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        />
+        /><br/>
         <input
           type="password"
-          placeholder="Your Password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />
+        /><br/>
         <button onClick={handleLogin}>Login</button>
-        <button onClick={handleSignup}>Signup</button>
+        <button onClick={handleSignup}>Sign Up</button>
       </form>
     </div>
   );
